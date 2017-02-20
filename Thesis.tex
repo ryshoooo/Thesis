@@ -1,0 +1,944 @@
+%%%
+%%%  ŠABLONA PRO BAKALÁŘSKOU PRÁCI MFF UK - MATEMATIKA
+%%%  
+%%%  * hlavní soubor (Masterfile)
+%%%
+%%%  Tato šablona předpokládá kompilaci souboru pomocí sekvence:
+%%%    cslatex -> bibtex -> cslatex (2x) -> dvips -> ps2pdf
+%%%  Pro použití s latexem, pdflatexem a pdfcslatexem je potřeba
+%%%  některé části trochu upravit.
+%%%
+%%%  AUTOŘI:  Martin Mareš (mares@kam.mff.cuni.cz)
+%%%           Arnošt Komárek (komarek@karlin.mff.cuni.cz), 2011
+%%%           Michal Kulich (kulich@karlin.mff.cuni.cz), 2013
+%%%
+%%%  POSLEDNÍ ÚPRAVA: 20130315
+%%%  
+%%%  ===========================================================================
+
+%%%%% Základní nastavení pro jednostranný tisk:
+%%%%% ----------------------------------------------------
+% Okraje: levý 40mm, pravý 25mm, horní a dolní 25mm (ale pozor, LaTeX si sám přidává 1in)
+\documentclass[12pt, a4paper]{report}
+\usepackage{ku-forside}
+\usepackage{gfsartemisia-euler}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{multirow}
+\setlength\textwidth{145mm}
+\setlength\textheight{247mm}
+\setlength\oddsidemargin{15mm}
+\setlength\evensidemargin{15mm}
+\setlength\topmargin{0mm}
+\setlength\headsep{0mm}
+\setlength\headheight{0mm}
+% \openright zařídí, aby následující text začínal na pravé straně knihy
+\let\openright=\clearpage
+
+
+%%%%% Základní nastavení pro oboustranný tisk:
+%%%%% ----------------------------------------------------
+% \documentclass[12pt, a4paper, twoside, openright]{report}
+% \setlength\textwidth{145mm}
+% \setlength\textheight{247mm}
+% \setlength\oddsidemargin{15mm}
+% \setlength\evensidemargin{0mm}
+% \setlength\topmargin{0mm}
+% \setlength\headsep{0mm}
+% \setlength\headheight{0mm}
+% \let\openright=\cleardoublepage
+
+
+%%%%% Nastavení kódování vstupních souborů: UTF-8
+%%%%% ---------------------------------------------------------------
+\usepackage[utf8]{inputenc} 
+
+
+
+%%%%% Nastavení češtiny (slovenština analogicky)
+%%%%% ---------------------------------------------------------------
+
+%%% Existují dvě hlavní možnosti, jak zacházet s češtinou. Je zapotřebí zvolit právě jednu.
+%%%
+
+%%% MOŽNOST 1 (doporučujeme):
+%%% * použití balíčku czech
+%%%   (mimo jiné již obsahuje příkaz \uv pro sazbu českých uvozovek)
+%%% * kompilace musí následně probíhat pomocí CSLaTeXu (příkaz
+%%%   cslatex, resp. cspdflatex)
+%\usepackage[czech]{babel}
+
+%%% MOŽNOST 2: (zde zakomentovaná)
+%%% * použití balíčku babel s volbou pro češtinu
+%%% * kompilace následně probíhá standardním LaTeXem (příkaz latex,
+%%% resp. pdflatex)
+% \usepackage[czech]{babel}
+% \ifx\uv\undefined\newcommand{\uv}[1]{,,#1``}\fi     
+%%% příkaz pro sazbu českých/slovenských uvozovek
+%%% (v novějších verzích babelu je již k dispozici, stejně tak je již
+%%% k dispozici v balíčku czech) 
+%\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage{a4wide}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{caption}
+\usepackage{mathrsfs}
+\usepackage{subcaption}
+\let\openbox\relax
+\usepackage{amsthm}
+%\usepackage{kmath,kerkis}
+\usepackage{bm}
+\renewcommand{\arctan}{\mathrm{arctg}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\hVec}[2]{\left(#1,#2\right)^T}
+\newcommand{\vVec}[2]{\left(\begin{array}{c}
+#1\\ #2
+\end{array}\right)}
+\newcommand{\prim}[3]{\left[#1\right]^{#2}_{#3}}
+\newcommand{\id}{\mathrm{id}}
+\usepackage[parfill]{parskip}
+\usepackage{hyperref}
+\frenchspacing
+\pagestyle{plain}
+\setlength{\parindent}{0pt}
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+%%% Další užitečné balíčky (jsou součástí běžných distribucí LaTeXu)
+%%% ----------------------------------------------------------------
+\usepackage{amsmath}        %%% rozšíření pro sazbu matematiky
+\usepackage{amsfonts}       %%% matematické fonty
+\usepackage{amsthm}         %%% sazba vět, definic apod.
+\usepackage{bm}             %%% tučné symboly (příkaz \bm)
+\usepackage{graphicx}       %%% vkládání obrázků
+%\usepackage{psfrag}         %%% dodatečná úprava popisků v postscriptových obrázcích
+\usepackage{fancyvrb}       %%% vylepšené prostředí pro strojové písmo
+\usepackage{natbib}         %%% zajištuje možnost odkazovat na
+                            %%% reference stylem AUTOR (ROK), resp.
+                            %%% AUTOR [ČÍSLO]  
+%\usepackage{bbding}         %%% balíček s nejrůznějšími
+                            %%% symboly (čtverečky, hvězdičky,
+                            %%% tužtičky, ručičky, nůžtičky, ...) 
+
+\usepackage{icomma}         %%% inteligetní čárka v matematickém módu
+\usepackage{dcolumn}        %%% lepší zarovnání sloupců v tabulkách
+\usepackage{booktabs}       %%% lepší vodorovné linky v tabulkách
+\usepackage{paralist}       %%% lepší enumerate a itemize 
+\usepackage{indentfirst}    %%% zaveď odsazení 1. odstavce
+                            %%% kapitoly (v češtině se tyto
+                            %%% odstavce odsazují) 
+\usepackage[nottoc]{tocbibind} %%% zajistí přidání seznamu literatury,
+                              %%% obrázků a tabulek do obsahu
+
+%%% hyperref: zajištuje generování hyperodkazů, bookmarků atp.
+%%%     * předefinovává mnoho příkazů, měl by být proto uveden jako
+%%%     poslední mezi seznamem zahrnutých balíčků        
+%%%     * v ukázce níže jsou přidána některá nastavení, která lze
+%%%     měnit dle libosti 
+\hypersetup{pdftitle=Název práce, 
+            pdfauthor=Jméno Příjmení
+            ps2pdf,
+            colorlinks=false,               %% hyperlinky budou označeny červenými rámečky, které budou neviditelné při tisku na papír
+            urlcolor=blue,
+            pdfstartview=FitH,
+            pdfpagemode=UseOutlines,
+            pdfnewwindow,
+            breaklinks                      %% zajistí, aby se dlouhé hyperodkazy mohly lámat přes více řádků
+}
+
+
+
+%%% Příkazy zjednodušující přenositelnost
+%%% -------------------------------------
+\newcommand{\FIGDIR}{./Obrazky}    %%% cesta do adresare s obrazky
+
+
+%%% Zavedení definic, vět, tvrzení, příkladů...
+%%% vyžaduje balíček amsthm
+\theoremstyle{plain}
+\newtheorem{veta}{Věta}
+\newtheorem{lemma}[veta]{Lemma}
+\newtheorem{tvrz}[veta]{Tvrzení}
+
+\theoremstyle{plain}
+\newtheorem{definice}{Definice}
+
+\theoremstyle{remark}
+\newtheorem*{dusl}{Důsledek}
+\newtheorem*{pozn}{Poznámka}
+\newtheorem*{prikl}{Příklad}
+
+
+%%% Prostředí pro důkazy zavedeme zvlášť
+%%% Vyžaduje balíček bbding
+%%% ------------------------------------
+
+\newenvironment{dukaz}{
+  \par\medskip\noindent
+  \textit{Důkaz}.
+}{
+\newline
+\rightline{\SquareCastShadowBottomRight}
+}
+
+
+%%% Seznam použité literatury
+%%% Příkaz \bibliographystyle určuje, jakým stylem budou citovány
+%%% odkazy v textu, a podle jakého stylu se automaticky vygeneruje
+%%% seznam literatury. V závorce je název zvoleného .bst souboru.
+%%% Styly plainnat a unsrt jsou standardní součástí latexových
+%%% distribucí. Styl czplainnat vyžaduje přítomnost souboru
+%%% czplainnat.bst ve stejném direktoráři, v němž se nachází
+%%% kompilovaná práce. 
+%%%
+%%% Seznam literatury se vytváří na konci práce příkazem \bibliography, kde v závorce
+%%% uvádíme název databázového bib souboru. 
+%%% 
+%%%
+%\bibliographystyle{czplainnat}    %% Autor (rok) s českými spojkami
+\bibliographystyle{plainnat}     %% Autor (rok) s anglickými spojkami
+%\bibliographystyle{unsrt}        %% [číslo]
+
+%\renewcommand{\bibname}{Seznam použité literatury}
+
+
+%%%%% Použití fancyvrb (fancy verbatim) při definici prostředí pro
+%%%%% sazbu kódu, resp. výstupů z počítačových programů 
+%%%%% ------------------------------------------------------------
+\DefineVerbatimEnvironment{PCinout}{Verbatim}{fontsize=\small, frame=single}
+
+
+%%%%% Další příkazy, které mohou zjednodušit tvorbu práce (často se
+%%%%% vyskytující symboly atd.) 
+%%%%% * vše by mělo být uvedeno na jednom místě (zde) 
+%%%%% * v hlavním textu by se již nemělo (až na výjimky) nikde
+%%%%%   vyskytovat \newcommand apod. 
+%%%%% * níže je uvedeno několik příkladů příkazů, jež jsou (resp.
+%%%%%   jejich modifikace a rozšíření) 
+%%%%%   užitečné při sazbě matematického textu
+%%%%% --------------------------------------------------------------
+
+%%% prostor reálných, resp. přirozených čísel
+
+
+%%% užitečné operátory pro statistiku a pravděpodobnost
+\DeclareMathOperator{\pr}{\textsf{P}}
+\DeclareMathOperator{\var}{\textrm{var}}
+\DeclareMathOperator{\sd}{\textrm{sd}}
+
+
+%%% příkaz pro transpozici vektoru/matice
+\newcommand{\T}[1]{#1^\top}        
+
+%%% různé šikovné vychytávky pro matematiku
+\newcommand{\goto}{\rightarrow}
+\newcommand{\gotop}{\stackrel{P}{\longrightarrow}}
+\newcommand{\maon}[1]{o(n^{#1})}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\dint}{\int_0^\tau\!\!\int_0^\tau}
+\newcommand{\isqr}[1]{\frac{1}{\sqrt{#1}}}
+
+%%% různé šikovné vychytávky pro tabulky
+\newcommand{\pulrad}[1]{\raisebox{1.5ex}[0pt]{#1}}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+
+
+
+%%%%% Hlavní část dokumentu
+%%%%% ---------------------
+\opgave{\textsc{\huge Master thesis in Actuarial mathematics} }
+\author{\textsc{ \Large Richard Németh} }
+\title{\large \bfseries Credit card fraud detection} 
+\undertitel{}
+\vejleder{\textsc{ \Large Jostein Paulsen, Nadeem Gulzar}}
+\dato{\textsc{ \Large \today}}
+\begin{document}
+\maketitle
+%%% Pro přehlednost je vhodné umístit jednotlivé kapitoly 
+%%% do samostatných souborů. Nepotřebné kapitoly můžeme zakomentovat.
+
+%%%
+%%%  VZOR PRO VYTVOŘENÍ BAKALÁŘSKÉ PRÁCE 
+%%%  
+%%%  * soubor obsahující titulní stránku a další náležitosti
+%%%  vyskytující se na začátku každé práce 
+%%%
+%%%  AUTOŘI:  Martin Mareš (mares@kam.mff.cuni.cz)
+%%%           Arnošt Komárek (komarek@karlin.mff.cuni.cz), 2011
+%%%           Michal Kulich (kulich@karlin.mff.cuni.cz), 2013
+%%%
+%%%  POSLEDNÍ ÚPRAVA: 20130315
+%%%  
+%%%  ===========================================================================
+
+\pagestyle{empty}
+%\begin{center}
+
+%%% Titulní strana
+%%% Tato stránka se nepřekládá do slovenštiny!!
+
+%{\large University of Copenhagen}
+
+%\medskip
+%{\large Faculty of SCIENCE}
+
+%\vfill
+%{\bfseries\Large MASTER THESIS}
+
+%\vfill
+%\centerline{\mbox{\includegraphics[width=60mm]{sam_2016.png}\quad \includegraphics[width=60mm]{db.png}}}
+
+%\vfill
+%\vspace{5mm}
+
+%{\LARGE Richard Németh}\\
+
+%\vspace{15mm}
+
+%%% Název práce  v češtině přesně podle zadání
+%{\LARGE\bfseries Credit card fraud detection}
+
+%\vfill
+
+%%% Název katedry nebo ústavu, kde byla práce oficiálně zadána
+%%% (dle Organizační struktury MFF UK) 
+%%% viz http://www.mff.cuni.cz/toUTF8.cs/fakulta/struktura/sekcem.htm
+%Department of Mathematical Sciences
+% Katedra algebry
+% Katedra didaktiky matematiky
+% Katedra matematické analýzy
+% Katedra numerické matematiky
+% Katedra pravděpodobnosti a~matematické statistiky
+% Matematický ústav UK
+
+
+%\vfill
+
+%\begin{tabular}{rl}
+%Responsible supervisor: & Nadeem Gulzar \\   %% Jméno a příjmení s~tituly 
+%Internal co-supervisor: & Jostein Paulsen \\
+%\noalign{\vspace{2mm}}
+%Study programme: & MSc in Actuarial Mathematics \\
+%\noalign{\vspace{2mm}}
+%Studijní obor: & Obecná matematika\\
+%Studijní obor: & Obecná matematika\\
+%Studijní obor: & Finanční matematika\\
+%Studijní obor: & Matematické metody informační bezpečnosti\\
+%\end{tabular}
+
+%\vfill
+
+% Zde doplňte rok
+%Copenhagen 2017
+
+%\end{center}
+
+
+
+
+%%% Následuje vevázaný list -- kopie podepsaného "Zadání bakalářské práce".
+%%% Toto zadání NENÍ součástí elektronické verze práce, nescanovat.
+
+
+
+\newpage
+\openright
+
+%%% Na tomto místě mohou být napsána případná poděkování (vedoucímu práce,
+%%% konzultantovi, tomu, kdo zapůjčil software, literaturu apod.)
+\noindent
+TODO
+
+
+
+
+\newpage
+%%% Strana s čestným prohlášením k bakalářské práci
+%%% Čestné prohlášení se nepřekládá do slovenštiny
+%\vspace*{\stretch{8}}
+
+%\noindent
+%Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně a~výhradně
+%s~použitím citovaných pramenů, literatury a~dalších odborných zdrojů.
+
+%\medskip\noindent
+%Beru na~vědomí, že se na moji práci vztahují práva a~povinnosti vyplývající
+%ze~zákona č.~121/2000 Sb., autorského zákona v~platném znění, zejména skutečnost,
+%že Univerzita Karlova v~Praze má právo na~uzavření licenční smlouvy o~užití této
+%práce jako školního díla podle \S60 odst.~1 autorského zákona.
+
+%\vspace{18mm}
+%%% Před odevzdáním nezapomeňte každý výtisk podepsat
+%\noindent
+%V \makebox[4cm]{\dotfill} dne \makebox[2.5cm]{\dotfill}
+%\hspace*{\fill}
+%Podpis autora
+%\hspace*{\fill}
+
+%\vspace*{\stretch{1}}
+
+
+
+
+%\newpage
+%%% Abstrakty v jazyce českém a anglickém
+
+%\vbox to 0.5\vsize{
+%\setlength\parindent{0mm}
+%\setlength\parskip{5mm}
+
+%Název práce:
+%Pearsonův korelační koeficient a jeho využití ve statistice
+
+%Autor:
+%Richard Németh
+
+%Katedra:  
+%Katedra pravděpodobnosti a matematické statistiky
+%%% (dle Organizační struktury MFF UK) 
+%%% viz http://www.mff.cuni.cz/toUTF8.cs/fakulta/struktura/sekcem.htm
+% Katedra algebry
+% Katedra didaktiky matematiky
+% Katedra matematické analýzy
+% Katedra numerické matematiky
+% Katedra pravděpodobnosti a~matematické statistiky
+% Matematický ústav UK
+
+%Vedoucí bakalářské práce:
+%Ing. Marek Omelka, PhD., Katedra pravděpodobnosti a matematické statistiky MFF UK
+%%% pracoviště dle Organizační struktury MFF UK
+%%% viz http://www.mff.cuni.cz/toUTF8.cs/fakulta/struktura/sekcem.htm
+%%% případně plný název pracoviště mimo MFF UK
+% Katedra algebry
+% Katedra didaktiky matematiky
+% Katedra matematické analýzy
+% Katedra numerické matematiky
+% Katedra pravděpodobnosti a~matematické statistiky
+% Matematický ústav UK
+
+
+%Abstrakt:
+%Cílem této práce je určení asymptotického rozdělení výběrového korelačního koeficientu bez předpokladu %normality a prozkoumat následné důsledky tohoto rozdělení na~běžně užívané statistické testy nezávislosti a intervaly spolehlivosti pro korelační koeficient. Problém je vyřešen pomocí centrální limitní věty a delta metody. Dokázali jsme, že běžně užívané testy nezávislosti v praxi jsou v asymptotickém smyslu v pořádku i~bez předpokladu normálního rozdělení. V práci jsou odvozené další varianty statistických testů pro nezávislost náhodných veličín a taky další varianty intervalů spolehlivosti pro korelační koeficient bez předpokladu normality. V závěru pomocí simulací porovnávame jednotlivé statistické testy nezávislosti a intervaly spolehlivosti pro specifická vícerozměrná rozdělení.
+
+%Klíčová slova:
+%korelační koeficient, asymptotické rozdělení, testy nezávislosti
+
+%\vss}
+
+\nobreak\vbox to 0.49\vsize{
+\setlength\parindent{0mm}
+\setlength\parskip{5mm}
+
+Title:
+Credit card fraud detection
+
+Author:
+Richard Németh
+
+Department:
+Department of Mathematical Sciences
+%%% dle Organizační struktury MFF UK v angličtině
+%%% viz http://www.mff.cuni.cz/toUTF8.en/fakulta/struktura/sekcem.htm
+% Department of Algebra
+% Department of Mathematics Education
+% Department of Mathematical Analysis
+% Department of Numerical Mathematics
+% Department of Probability and Mathematical Statistics
+% Mathematical Institute of Charles University
+
+Supervisor:
+Nadeem Gulzar
+%%% dle Organizační struktury MFF UK v angličtině
+%%% viz http://www.mff.cuni.cz/toUTF8.en/fakulta/struktura/sekcem.htm
+%%% případně plný název pracoviště mimo MFF UK přeložený do angličtiny
+% Department of Algebra
+% Department of Mathematics Education
+% Department of Mathematical Analysis
+% Department of Numerical Mathematics
+% Department of Probability and Mathematical Statistics
+% Mathematical Institute of Charles University
+
+Abstract:
+TODO
+
+Keywords:
+TODO
+\vss}
+
+
+
+%\newpage
+%%% Slovenský abstrakt; tato strana se vkládá pouze do prací psaných ve
+%%% slovenštině
+
+%\vbox to 0.5\vsize{
+%\setlength\parindent{0mm}
+%\setlength\parskip{5mm}
+
+%Názov práce: Pearsonov korelačný koeficient a jeho využitie v štatistike. 
+
+%Autor:
+%Richard Németh
+
+%Katedra:  
+%Katedra pravděpodobnosti a~matematické statistiky
+%%% Název katedry dle Organizační struktury MFF UK
+%%% viz http://www.mff.cuni.cz/toUTF8.cs/fakulta/struktura/
+%%% Nepřekládat do slovenštiny!!!
+% Katedra algebry
+% Katedra didaktiky matematiky
+% Katedra matematické analýzy
+% Katedra numerické matematiky
+% Katedra pravděpodobnosti a~matematické statistiky
+% Matematický ústav UK
+
+%Vedúci bakalárskej práce:
+%Ing. Marek Omelka, Ph.D., Katedra pravděpodobnosti a~matematické statistiky
+%%% dle Organizační struktury MFF UK
+%%% případně plný název pracoviště mimo MFF UK
+%%% Pracoviště nepřekládat do slovenštiny!!!
+% Katedra algebry
+% Katedra didaktiky matematiky
+% Katedra matematické analýzy
+% Katedra numerické matematiky
+% Katedra pravděpodobnosti a~matematické statistiky
+% Matematický ústav UK
+
+%Abstrakt:
+%Slovenský abstrakt v rozsahu 80\,--\,200 slov. Nejedná sa o preklad
+%zadania bakalárskej práce. Táto stránka sa vkladá iba do slovenských
+%prác.
+
+%Kľúčové slová:
+%3 až 5 kľúčových slov vo slovenčině
+
+%\vss}
+
+
+
+\newpage
+\openright
+
+%%% Strana s automaticky generovaným obsahem bakalářské práce. U matematických
+%%% prací je přípustné, aby případný seznam tabulek a zkratek, existují-li, byl umístěn
+%%% na začátku práce, místo na jejím konci.
+
+
+\tableofcontents
+%\thispagestyle{empty}
+%%% Změny se v automaticky generovaném obsahu projeví až po druhém
+%%% zpracování zdrojového souboru (při prvním zpracování se pouze
+%%% zapíšou do .toc souboru) 
+
+
+%\include{Bc_kap01}
+%\include{Bc_kap03}
+%\include{Bc_kap02}
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\chapter*{Introduction}
+\label{chap:introduction}
+\addcontentsline{toc}{chapter}{\nameref{chap:introduction}}
+
+\pagestyle{plain}
+\setcounter{page}{1}
+
+Fraud is a common occurrence in our everyday life. People get tricked into sending their money away, or they enter their credit card credentials on ``suspicious'' websites or they just honestly answer to phishing emails. The cornerstone and the basic foundation of a bank is to keep safe customer's accounts, thus it is the customer's bank's duty to protect their savings. However the newest technological advancements allow us, with customer's permission, to track and protect our own customers before these unlikely events and stop these transactions, before it is too late.\\
+\\
+This project is carried out as collaboration between University of Copenhagen and Danske Bank A/S with the goal to develop a machine learning model, which is able to accurately score, how likely the outgoing transaction is fraud or not.\\
+\\
+Danske Bank is a Nordic universal bank with core markets in Scandinavia and Finland. Danske Bank's vision is to be ``recognised as the most trusted financial partner'' and works with 5 core values:
+\begin{enumerate}
+\item \textbf{Expertise}: Make knowledge relevant.
+\item \textbf{Integrity}: Be responsible.
+\item \textbf{Value}: Make a difference.
+\item \textbf{Agility}: Embrace change and be responsive.
+\item \textbf{Collaboration}: Engage, listen and act.
+\end{enumerate}
+One of the main strategies for Danske Bank is to become fully data-driven bank. This project is sublimed under all Danske Bank's core strategies, missions, visions and values and is with full agreement with Danske Bank's demands.\\
+\\
+This project is divided into 2 main parts. The first part is theoretical exploration of modern machine learning models, specialized in classification problems. We will go through the very basic machine learning models, such as logistic regression, up to the most modern and very popular neural networks and deep learning algorithms.
+
+The second part focuses on the actual application of the aforementioned models on real data. We will explain what kind of environment and platform we have, how are the data structured and the whole procedure of model fitting on big data platform.
+
+In conclusion we will take ``the best'' model achieved and discuss the future possibilities or possible model deployment into Danske Bank's production.
+\chapter{Machine learning theory}
+\label{chap:machine_learning_theory}
+
+Machine learning is a subfield of AI, artificial intelligence, which was developed in 1950s. The idea was to learn the machine how to make decisions based on the input data. Throughout the years, machine learning started using more and more probability theory and statistics with more and more digitalized data knowledge, which received popularity in 1990s.
+
+Nowadays the combination of machine learning algorithms with powerful computational tools is extremely popular and is used in many companies to reduce their losses or make their businesses more efficient and data-driven.
+
+In the next subsections we will be mostly following~\citep{basicRef}.
+
+\section{General introduction}
+\label{sec:mlt_general_introduction}
+
+In this section we are going to explore a very general machine learning problem, what are we actually searching for and how the modelling is done. Since it is not possible to unify every single machine learning model into one equation, this section should not be considered as general truth. We will only explore the general ideas of machine learning algorithms and show, how fitting can be done.
+
+\subsection{General population machine learning model}
+\label{subsec:mlt_gi_general_population_machine_learning_model}
+
+In general, let $Y$ be a real random variable called \textbf{response} and let $\pmb{x}=(x_1,\ldots,x_m)\in \R^m$ be a row vector of known values called \textbf{features}. The machine learning problem is of form
+$$
+g(Y) = f(\pmb{x})+\text{``error''},
+$$
+where the ``error'' term is some model-specific noise term, $f$ and $g$ are some functions specified by the particular model. The idea is to find the optimal function $f$ or $g$ in such a way, that the error term is minimal.\\
+\\
+\textbf{Example.} As a simple example of machine learning model, one can consider linear regression model. Let $\pmb{x} = (1,x_1,\ldots,x_m)\in\R^{m+1}$ a row vector and let $g(y)=y, f_{\pmb{\beta}}(\pmb{x})=\pmb{x}\pmb{\beta}$ for $\pmb{\beta}\in\R^{m+1}$ a column vector and let the error be $\varepsilon\sim\mathcal{N}(0,\sigma^2)$, then
+$$
+Y = \pmb{x}\pmb{\beta} + \varepsilon \Leftrightarrow g(Y) = f_{\pmb{\beta}}(\pmb{x}) + \varepsilon.
+$$
+As we can notice, the linear regression problem is a special case of machine learning problem.\\
+\\
+We can classify machine learning problems into 2 categories based on the distribution of $Y$:
+
+\begin{enumerate}
+\item \textbf{classification problem}, in case the distribution of $Y$ is discrete,
+\item \textbf{regression problem}, in case the distribution of $Y$ is (absolutely) continuous.
+\end{enumerate}
+
+Furthermore we can classify machine learning models based on the observability of $Y$:
+\begin{enumerate}
+\item \textbf{supervised machine learning}, in case we have labelled dataset with observed labels $\pmb{y}=(y_1,\ldots,y_n)'$,
+\item \textbf{unsupervised machine learning}, in case the response realizations are not observed and the labels are missing.
+\end{enumerate}
+
+The idea is to find the best pair of functions $f,g$ from all its possibilities within the specific machine learning model in such a way, the error term is minimal. Every machine learning model specifies its error term via \textbf{loss function}.
+
+\textbf{Examples.} There are many possibilities for loss functions:
+\begin{itemize}
+\item \textbf{negative log-likelihood}, in case the distribution of features and the error term is specified,
+\item \textbf{cumulative mean squared error loss}, in case of regression problem, i.e.
+$$
+L^{MSE}(\pmb{y},\pmb{X}) = \sum_{i=1}^n (g(y_i) - f(\pmb{X}_{i\bullet}))^2,
+$$
+where $\pmb{y} = (y_1,\ldots,y_n)'\in\R^n$ are the observed labels, $\pmb{X}\in\R^{n\times m}$ is the matrix of features, $\pmb{x}_{i\bullet}$ is the $i$-th row of matrix $\pmb{X}$,
+\item \textbf{cumulative mean squared error loss with constraints}, see subsection~\ref{subsec:mlt_sml_support_vector_machine}.
+\item \textbf{cumulative Gini index}, see subsection~\ref{subsec:mlt_sml_decision_tree}.
+\end{itemize}
+
+The choice of a specific loss function depends on the particular model. It might be possible for one model to choose different loss functions, which yield different results. One should choose the loss function, which provides the best model. The methods for model evaluation will be discussed in Section~\ref{sec:mlt_model_evaluation}.
+
+\section{Supervised machine learning}
+\label{sec:mlt_supervised_machine_learning}
+
+This section will explore some basic and more advanced supervised machine learning models. Since the theme of this thesis is fraud detection, we will be focusing only on classification problems. From now on the response $Y$ has Bernoulli distribution $Be(p)$ with probability $p\in(0,1)$, unless specified otherwise.
+
+\subsection{Logistic regression}
+\label{subsec:mlt_sml_logistic_regression}
+
+\subsubsection{Definition}
+\label{subsubsec:mlt_sml_lr_definition}
+
+One of the basic machine learning models is logistic regression. Let $\pmb{x}\in\R^{m}$ be a feature row vector and let $\pmb{\beta}=(\beta_1,\ldots,\beta_m)'\in\R^{m},\ \beta_0\in\R$ an unknown vector of parameters, then the logistic regression formula has form:
+
+$$
+g(p) = \beta_0 + \pmb{x}\pmb{\beta},
+$$
+
+where $g$ is known as \textbf{link function} and most commonly is logit function, i.e.
+
+$$
+g(p) = \log(p) - \log(1-p),
+$$
+
+hence the name logistic regression. Note that logistic regression does not model the response $Y$ directly, but models $\E[Y]=p$, the probability of fraudulent transaction.
+
+\subsubsection{Fitting}
+\label{subsubsec:mlt_sml_lr_fitting}
+
+Logistic regression is a special case of generalized linear models. Generalized linear models are distribution-specific, thus the ideal loss function is negative log-likelihood.\\
+\\
+Let $Y_1,\ldots,Y_n$ be independent random variables, such that $Y_i\sim Be(p_i)$ and let $\pmb{X}\in\R^{n\times m}$ be observed feature matrix, where
+
+$$
+\log\left(\frac{p_i}{1-p_i}\right) = \beta_0 + \pmb{X}_{i\bullet}\pmb{\beta}.
+$$
+
+Let us consider redefined feature matrix and vector of parameters
+
+$$
+\pmb{X} := \left( \pmb{1}, \pmb{X} \right),\quad \pmb{\beta} := (\beta_0, \pmb{\beta}),
+$$
+
+then 
+
+\begin{equation}
+\label{eq:mlt_sml_lr_f_prob_relation}
+\log\left(\frac{p_i}{1-p_i}\right) = \pmb{X}_{i\bullet}\pmb{\beta} \Leftrightarrow p_i = \frac{\exp\left\{\pmb{X}_{i\bullet}\pmb{\beta}\right\}}{1+\exp\left\{\pmb{X}_{i\bullet}\pmb{\beta}\right\}}=\frac{1}{1+\exp\left\{-\pmb{X}_{i\bullet}\pmb{\beta}\right\}}.
+\end{equation}
+
+Therefore the likelihood function has form:
+
+$$
+\pmb{\beta} \mapsto \prod_{i=1}^n \left(\frac{1}{1+\exp\left\{-\pmb{X}_{i\bullet}\pmb{\beta}\right\}}\right)^{\textbf{1}_{(y_i=1)}}\left(\frac{1}{1+\exp\left\{\pmb{X}_{i\bullet}\pmb{\beta}\right\}}\right)^{\textbf{1}_{(y_i=0)}},\ \pmb{\beta}\in\R^{m+1},
+$$
+
+which finally yields the negative log-likelihood loss:
+
+$$
+L^{MLE}(\pmb{\beta}) = \sum_{i=1}^n \textbf{1}_{(y_i=1)}\log\left(1+\exp\left\{-\pmb{X}_{i\bullet}\pmb{\beta}\right\}\right) + \sum_{i=1}^n \textbf{1}_{(y_i=0)}\log\left(1+\exp\left\{\pmb{X}_{i\bullet}\pmb{\beta}\right\}\right),\ \pmb{\beta}\in\R^{m+1}.
+$$
+
+Thus by minimizing function $L^{MLE}$ we are able to fit the model to the data.
+
+\subsubsection{Remarks and references}
+\label{subsubsec:mlt_sml_lr_remarks_and_references}
+
+There are more possibilities for the choice of link function, f.e.:
+\begin{itemize}
+\item probit function (normal quantile function), $g(p) = \Phi^{-1}(p)$ where $\Phi$ is the distribution function of $\mathcal{N}(0,1)$ distribution,
+\item cloglog function, $g(p) = \log(-log(1-p))$,
+\item cauchit function, $g(p) = \tan\left(\left(\pi\left(p-\frac{1}{2}\right)\right)\right)$.
+\end{itemize}
+
+As for prediction, we can use Equation~(\ref{eq:mlt_sml_lr_f_prob_relation}), where we replace $\pmb{\beta}$ with the estimated parameters $\hat{\pmb{\beta}}$, i.e. let $\pmb{x}=(1,x_1,\ldots,x_m)\in\R^{m+1}$ be a new set of observed features, then the estimated probability $\hat{p}$ of this particular case being fraudulent is
+
+\begin{equation}
+\label{eq:mlt_sml_lr_f_prediction}
+\hat{p} = \frac{1}{1+\exp\left\{-\pmb{x}\hat{\pmb{\beta}}\right\}}.
+\end{equation}
+You can find more about logistic regression in \citep{basicRef} or \citep{logReg}.
+
+\subsection{Linear discriminant analysis}
+\label{subsec:mlt_sml_linear_discriminant_analysis}
+
+\subsubsection{Definition}
+\label{subsubsec:mlt_sml_lda_definition}
+
+Linear discriminant analysis uses Bayesian method, i.e. assume that the feature vector $\pmb{x}$ is a random vector, such that given $Y=y$ for $y\in\{0,1\}$ $\pmb{x}$ has multivariate normal distribution $\mathcal{N}_m(\pmb{\mu}_y, \Sigma)$ with probability density function $f_y$ of form
+
+$$
+f_y(\pmb{x}) = \frac{1}{\sqrt{2\pi |\Sigma|^m}} \exp\left\{-\frac{1}{2}\left(\pmb{x} - \pmb{\mu}_y\right)'\Sigma^{-1}\left(\pmb{x}-\pmb{\mu}_y\right)\right\},\ \pmb{\mu}_y\in \R^m, \ \Sigma\in \R^{m\times m},\ \Sigma > 0.
+$$
+
+Denote $\pi_y$ the prior probability $P(Y=y)$, then by Bayes theorem (see~\citep{Lehmann}) we get the model equation:
+
+$$
+p = P\left(Y=1|\pmb{x}=\pmb{x}'\right) = \frac{\pi_1f_1(\pmb{x}')}{\pi_0f_0(\pmb{x}') + \pi_1f_1(\pmb{x}')}.
+$$
+
+Plugging in the expression for $f_y(\pmb{x}')$ results in
+
+\begin{align*}
+p &= \frac{\pi_1 \exp\left\{-\frac{1}{2}\left(\pmb{x} - \pmb{\mu}_1\right)'\Sigma^{-1}\left(\pmb{x}-\pmb{\mu}_1\right)\right\}}{\pi_0 \exp\left\{-\frac{1}{2}\left(\pmb{x} - \pmb{\mu}_0\right)'\Sigma^{-1}\left(\pmb{x}-\pmb{\mu}_0\right)\right\} + \pi_1 \exp\left\{-\frac{1}{2}\left(\pmb{x} - \pmb{\mu}_1\right)'\Sigma^{-1}\left(\pmb{x}-\pmb{\mu}_1\right)\right\}}\\
+&= \frac{\pi_1\exp\left\{\pmb{\mu}_1'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_1'\Sigma^{-1}\pmb{\mu}_1\right\}}{\pi_0\exp\left\{\pmb{\mu}_0'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_0'\Sigma^{-1}\pmb{\mu}_0\right\} + \pi_1\exp\left\{\pmb{\mu}_1'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_1'\Sigma^{-1}\pmb{\mu}_1\right\}}.
+\end{align*}
+
+Note that
+
+$$
+1-p = \frac{\pi_0\exp\left\{\pmb{\mu}_0'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_0'\Sigma^{-1}\pmb{\mu}_0\right\}}{\pi_0\exp\left\{\pmb{\mu}_0'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_0'\Sigma^{-1}\pmb{\mu}_0\right\} + \pi_1\exp\left\{\pmb{\mu}_1'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_1'\Sigma^{-1}\pmb{\mu}_1\right\}}
+$$
+
+has the exact same denominator as $p$ and since we will be only searching for the class with highest probability, it is enough to consider function
+
+\begin{equation}
+\label{eq:mlt_sml_lda_d_exp_delta}
+\pmb{x} \mapsto \pi_y\exp\left\{\pmb{\mu}_y'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_y'\Sigma^{-1}\pmb{\mu}_y\right\},\quad \pmb{x}\in\R^m,\ y\in\{0,1\}.
+\end{equation}
+
+Function defined in Equation~(\ref{eq:mlt_sml_lda_d_exp_delta}) is increasing in $\pmb{x}$ with convention $\pmb{x}\leq \pmb{x}'\Leftrightarrow \forall i \in\{1,\ldots,m\}: x_i\leq x'_i$, thus we can use log transformation to define
+
+\begin{equation}
+\label{eq:mlt_sml_lda_d_delta}
+\delta_y(\pmb{x}) = \log \pi_y + \pmb{\mu}_y'\Sigma^{-1}\pmb{x} - \frac{1}{2}\pmb{\mu}_y'\Sigma^{-1}\pmb{\mu}_y,\quad \pmb{x}\in\R^m, y\in\{0,1\}.
+\end{equation}
+
+The function defined in Equation~(\ref{eq:mlt_sml_lda_d_delta}) is called \textbf{linear discriminant function} and one can easily observe, that the function is linear in $\pmb{x}$.
+\subsubsection{Fitting}
+\label{subsubsec:mlt_sml_lda_fitting}
+
+TODO
+
+\subsubsection{Remarks and references}
+\label{subsubsec:mlt_sml_lda_remarks_and_references}
+
+TODO
+
+\subsection{Support vector machine}
+\label{subsec:mlt_sml_support_vector_machine}
+
+\subsubsection{Definition}
+\label{subsubsec:mlt_sml_svm_definition}
+
+TODO
+
+\subsubsection{Fitting}
+\label{subsubsec:mlt_sml_svm_fitting}
+
+TODO
+
+\subsubsection{Remarks and references}
+\label{subsubsec:mlt_sml_svm_remarks_and_references}
+
+TODO
+
+\subsection{Decision tree}
+\label{subsec:mlt_sml_decision_tree}
+
+TODO
+
+\subsection{Random forest}
+\label{subsec:mlt_sml_random_forest}
+
+TODO
+
+\subsection{Gradient boosting machine}
+\label{subsec:mlt_sml_gradient_boosting_machine}
+
+TODO
+
+\subsection{Neural network}
+\label{subsec:mlt_sml_neural_network}
+
+TODO
+
+\section{Unsupervised machine learning}
+\label{sec:mlt_unsupervised_machine_learning}
+
+TODO
+
+\subsection{K-means clustering}
+\label{subsec:mlt_uml_k_means_clustering}
+
+TODO
+
+\subsection{Principal component analysis}
+\label{subsec:mlt_uml_principal_component_analysis}
+
+TODO
+
+\section{Model evaluation}
+\label{sec:mlt_model_evaluation}
+
+TODO
+
+\subsection{Cross-validation}
+\label{subsec:mlt_me_cross_validation}
+
+TODO
+
+\subsection{Performance metrics}
+\label{subsec:mlt_me_performance_metric}
+
+TODO
+
+\subsection{Local Interpretable Model-Agnostic Explanations LIME}
+\label{subsec:mlt_me_local_interpretable_model_agnostice_explanations_lime}
+
+TODO
+
+\chapter{Credit card fraud modelling}
+\label{chap:credit_card_fraud_modelling}
+
+TODO
+
+\section{Introduction and business definitions}
+\label{sec:ccfm_introductions_and_business_definitions}
+
+TODO
+
+\subsection{Understanding fraud}
+\label{subsec:ccfm_iabd_understanding_fraud}
+
+TODO
+
+\subsection{Security and legal restrictions}
+\label{subsec:ccfm_iabd_security_and_legal_restrictions}
+
+TODO
+
+\section{Data warehouse}
+\label{sec:ccfm_data_warehouse}
+
+TODO
+
+\subsection{Data sources and platforms}
+\label{subsec:ccfm_dw_data_sources_and_platforms}
+
+TODO
+
+\subsection{Big data computational tools}
+\label{subsec:ccfm_dw_big_data_computational_tools}
+
+TODO
+
+\subsection{Transaction and fraud data}
+\label{subsec:ccfm_dw_transaction_and_fraud_data}
+
+TODO
+
+\subsection{Customer and bank account data}
+\label{subsec:ccfm_dw_customer_data}
+
+TODO
+
+\subsection{Credit card data}
+\label{subsec:ccfm_dw_credit_card_data}
+
+TODO
+
+\section{Feature engineering}
+\label{sec:ccfm_feature_engineering}
+
+TODO
+
+\subsection{Non-aggregated historical statuses and labels}
+\label{subsec:ccfm_fe_non_aggregated_historical_statuses_and_labels}
+
+TODO
+
+\subsection{Aggregated historical statistics}
+\label{subsec:ccfm_fe_aggregated_historical_statistics}
+
+TODO
+
+\subsection{Dimension reduction}
+\label{subsec:ccfm_fe_dimension_reduction}
+
+TODO
+
+\subsection{Making new features}
+\label{subsec:ccfm_fe_making_new_features}
+
+TODO
+
+\section{Model fitting and evaluation}
+\label{sec:ccfm_model_fitting_and_evaluation}
+
+TODO
+
+\subsection{Data wrangling and cleaning}
+\label{subsec:ccfm_mfae_data_wrangling_and_cleaning}
+
+TODO
+
+\subsection{Model fitting and evaluation}
+\label{subsec:ccfm_mfae_model_fitting_and_evaluation}
+
+TODO
+
+\subsection*{Model deployment and real time analytics*}
+\label{subsec:ccfm_mfae_model_deployment_and_real_time_analytics}
+\addcontentsline{toc}{subsection}{\nameref{subsec:ccfm_mfae_model_deployment_and_real_time_analytics}}
+
+TODO
+
+\chapter*{Conclusion}
+\label{chap:conclusion}
+\addcontentsline{toc}{chapter}{\nameref{chap:conclusion}}
+
+TODO
+
+\bibliography{priklady_literatury}
+\end{document}
